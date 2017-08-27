@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HARDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Block">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="House">
+          <Key>
+            <PropertyRef Name="house_id" />
+          </Key>
+          <Property Name="house_id" Type="int" Nullable="false" />
+          <Property Name="zipcode" Type="int" />
+          <Property Name="property_type" Type="int" />
+          <Property Name="added_by" Type="int" Nullable="false" />
+          <Property Name="sqft" Type="int" />
+          <Property Name="bath" Type="int" />
+          <Property Name="bed" Type="int" />
+          <Property Name="street_1" Type="varchar" MaxLength="50" />
+          <Property Name="street_2" Type="varchar" MaxLength="50" />
+          <Property Name="price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="year_built" Type="datetime" />
+          <Property Name="city" Type="varchar" MaxLength="50" />
+          <Property Name="state" Type="varchar" MaxLength="50" />
+          <Property Name="photo_1" Type="image" />
+          <Property Name="photot_2" Type="image" />
+          <Property Name="photo_3" Type="image" />
+          <Property Name="sold" Type="bit" />
+        </EntityType>
+        <EntityType Name="PropertyType">
+          <Key>
+            <PropertyRef Name="pid" />
+          </Key>
+          <Property Name="pid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="type_of_property" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="mobile_no" Type="int" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="user_role" Type="int" Nullable="false" />
+          <Property Name="amount_due" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="user_status" Type="int" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="user_role_id" />
+          </Key>
+          <Property Name="user_role_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_role" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__House__added_by__37A5467C">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="House" Type="Self.House" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="House">
+              <PropertyRef Name="added_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__House__property___36B12243">
+          <End Role="PropertyType" Type="Self.PropertyType" Multiplicity="0..1" />
+          <End Role="House" Type="Self.House" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PropertyType">
+              <PropertyRef Name="pid" />
+            </Principal>
+            <Dependent Role="House">
+              <PropertyRef Name="property_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__User__user_role__1B0907CE">
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="user_role_id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="user_role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__User__user_statu__25869641">
+          <End Role="UserStatus" Type="Self.UserStatus" Multiplicity="0..1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="user_status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HARDatabaseModelStoreContainer">
+          <EntitySet Name="Block" EntityType="Self.Block" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="House" EntityType="Self.House" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PropertyType" EntityType="Self.PropertyType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserStatus" EntityType="Self.UserStatus" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__House__added_by__37A5467C" Association="Self.FK__House__added_by__37A5467C">
+            <End Role="User" EntitySet="User" />
+            <End Role="House" EntitySet="House" />
+          </AssociationSet>
+          <AssociationSet Name="FK__House__property___36B12243" Association="Self.FK__House__property___36B12243">
+            <End Role="PropertyType" EntitySet="PropertyType" />
+            <End Role="House" EntitySet="House" />
+          </AssociationSet>
+          <AssociationSet Name="FK__User__user_role__1B0907CE" Association="Self.FK__User__user_role__1B0907CE">
+            <End Role="UserRole" EntitySet="UserRole" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK__User__user_statu__25869641" Association="Self.FK__User__user_statu__25869641">
+            <End Role="UserStatus" EntitySet="UserStatus" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HARDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="HARDatabaseEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Blocks" EntityType="HARDatabaseModel.Block" />
+          <EntitySet Name="Houses" EntityType="HARDatabaseModel.House" />
+          <EntitySet Name="PropertyTypes" EntityType="HARDatabaseModel.PropertyType" />
+          <EntitySet Name="Users" EntityType="HARDatabaseModel.User" />
+          <EntitySet Name="UserRoles" EntityType="HARDatabaseModel.UserRole" />
+          <EntitySet Name="UserStatus" EntityType="HARDatabaseModel.UserStatu" />
+          <AssociationSet Name="FK__House__added_by__37A5467C" Association="HARDatabaseModel.FK__House__added_by__37A5467C">
+            <End Role="User" EntitySet="Users" />
+            <End Role="House" EntitySet="Houses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__House__property___36B12243" Association="HARDatabaseModel.FK__House__property___36B12243">
+            <End Role="PropertyType" EntitySet="PropertyTypes" />
+            <End Role="House" EntitySet="Houses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__User__user_role__1B0907CE" Association="HARDatabaseModel.FK__User__user_role__1B0907CE">
+            <End Role="UserRole" EntitySet="UserRoles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__User__user_statu__25869641" Association="HARDatabaseModel.FK__User__user_statu__25869641">
+            <End Role="UserStatu" EntitySet="UserStatus" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Block">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="House">
+          <Key>
+            <PropertyRef Name="house_id" />
+          </Key>
+          <Property Name="house_id" Type="Int32" Nullable="false" />
+          <Property Name="zipcode" Type="Int32" />
+          <Property Name="property_type" Type="Int32" />
+          <Property Name="added_by" Type="Int32" Nullable="false" />
+          <Property Name="sqft" Type="Int32" />
+          <Property Name="bath" Type="Int32" />
+          <Property Name="bed" Type="Int32" />
+          <Property Name="street_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="street_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="year_built" Type="DateTime" Precision="3" />
+          <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="state" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="photo_1" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="photot_2" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="photo_3" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="sold" Type="Boolean" />
+          <NavigationProperty Name="User" Relationship="HARDatabaseModel.FK__House__added_by__37A5467C" FromRole="House" ToRole="User" />
+          <NavigationProperty Name="PropertyType" Relationship="HARDatabaseModel.FK__House__property___36B12243" FromRole="House" ToRole="PropertyType" />
+        </EntityType>
+        <EntityType Name="PropertyType">
+          <Key>
+            <PropertyRef Name="pid" />
+          </Key>
+          <Property Name="pid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type_of_property" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Houses" Relationship="HARDatabaseModel.FK__House__property___36B12243" FromRole="PropertyType" ToRole="House" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="mobile_no" Type="Int32" Nullable="false" />
+          <Property Name="email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="user_role" Type="Int32" Nullable="false" />
+          <Property Name="amount_due" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="user_status" Type="Int32" />
+          <NavigationProperty Name="Houses" Relationship="HARDatabaseModel.FK__House__added_by__37A5467C" FromRole="User" ToRole="House" />
+          <NavigationProperty Name="UserRole" Relationship="HARDatabaseModel.FK__User__user_role__1B0907CE" FromRole="User" ToRole="UserRole" />
+          <NavigationProperty Name="UserStatu" Relationship="HARDatabaseModel.FK__User__user_statu__25869641" FromRole="User" ToRole="UserStatu" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="user_role_id" />
+          </Key>
+          <Property Name="user_role_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_role" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="HARDatabaseModel.FK__User__user_role__1B0907CE" FromRole="UserRole" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserStatu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="HARDatabaseModel.FK__User__user_statu__25869641" FromRole="UserStatu" ToRole="User" />
+        </EntityType>
+        <Association Name="FK__House__added_by__37A5467C">
+          <End Type="HARDatabaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="HARDatabaseModel.House" Role="House" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="House">
+              <PropertyRef Name="added_by" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__House__property___36B12243">
+          <End Type="HARDatabaseModel.PropertyType" Role="PropertyType" Multiplicity="0..1" />
+          <End Type="HARDatabaseModel.House" Role="House" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PropertyType">
+              <PropertyRef Name="pid" />
+            </Principal>
+            <Dependent Role="House">
+              <PropertyRef Name="property_type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__User__user_role__1B0907CE">
+          <End Type="HARDatabaseModel.UserRole" Role="UserRole" Multiplicity="1" />
+          <End Type="HARDatabaseModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRole">
+              <PropertyRef Name="user_role_id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="user_role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__User__user_statu__25869641">
+          <End Type="HARDatabaseModel.UserStatu" Role="UserStatu" Multiplicity="0..1" />
+          <End Type="HARDatabaseModel.User" Role="User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserStatu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="user_status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HARDatabaseModelStoreContainer" CdmEntityContainer="HARDatabaseEntities1">
+          <EntitySetMapping Name="Blocks">
+            <EntityTypeMapping TypeName="HARDatabaseModel.Block">
+              <MappingFragment StoreEntitySet="Block">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Houses">
+            <EntityTypeMapping TypeName="HARDatabaseModel.House">
+              <MappingFragment StoreEntitySet="House">
+                <ScalarProperty Name="sold" ColumnName="sold" />
+                <ScalarProperty Name="photo_3" ColumnName="photo_3" />
+                <ScalarProperty Name="photot_2" ColumnName="photot_2" />
+                <ScalarProperty Name="photo_1" ColumnName="photo_1" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="city" ColumnName="city" />
+                <ScalarProperty Name="year_built" ColumnName="year_built" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="street_2" ColumnName="street_2" />
+                <ScalarProperty Name="street_1" ColumnName="street_1" />
+                <ScalarProperty Name="bed" ColumnName="bed" />
+                <ScalarProperty Name="bath" ColumnName="bath" />
+                <ScalarProperty Name="sqft" ColumnName="sqft" />
+                <ScalarProperty Name="added_by" ColumnName="added_by" />
+                <ScalarProperty Name="property_type" ColumnName="property_type" />
+                <ScalarProperty Name="zipcode" ColumnName="zipcode" />
+                <ScalarProperty Name="house_id" ColumnName="house_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PropertyTypes">
+            <EntityTypeMapping TypeName="HARDatabaseModel.PropertyType">
+              <MappingFragment StoreEntitySet="PropertyType">
+                <ScalarProperty Name="type_of_property" ColumnName="type_of_property" />
+                <ScalarProperty Name="pid" ColumnName="pid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="HARDatabaseModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="user_status" ColumnName="user_status" />
+                <ScalarProperty Name="amount_due" ColumnName="amount_due" />
+                <ScalarProperty Name="user_role" ColumnName="user_role" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="mobile_no" ColumnName="mobile_no" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="HARDatabaseModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRole">
+                <ScalarProperty Name="user_role" ColumnName="user_role" />
+                <ScalarProperty Name="user_role_id" ColumnName="user_role_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserStatus">
+            <EntityTypeMapping TypeName="HARDatabaseModel.UserStatu">
+              <MappingFragment StoreEntitySet="UserStatus">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
